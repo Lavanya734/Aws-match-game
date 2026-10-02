@@ -1,0 +1,36 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFB13B"/>
+      <stop offset="100%" stop-color="#EC7211"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="64" height="64" rx="16" fill="#171717"/>
+
+  <g transform="rotate(-12 26 32)">
+    <rect x="10" y="17" width="29" height="36" rx="6"
+          fill="#FFFFFF"/>
+    <rect x="14" y="21" width="21" height="28" rx="3"
+          fill="#FFF2DE"/>
+    <path d="M24.5 27 L27 32 L32 34.5 L27 37 L24.5 42
+             L22 37 L17 34.5 L22 32 Z"
+          fill="#FF9900"/>
+  </g>
+
+  <g transform="rotate(12 41 30)">
+    <rect x="30" y="10" width="24" height="34" rx="6"
+          fill="url(#orange)"/>
+    <rect x="34" y="14" width="16" height="26" rx="3"
+          fill="#FFFFFF"/>
+    <path d="M42 20 L44 25 L49 27 L44 29 L42 34
+             L40 29 L35 27 L40 25 Z"
+          fill="#EC7211"/>
+  </g>
+
+  <circle cx="49" cy="49" r="8" fill="#171717"/>
+  <path d="M49 43 L50.8 47.2 L55 49 L50.8 50.8
+           L49 55 L47.2 50.8 L43 49 L47.2 47.2 Z"
+        fill="#FF9900"/>
+</svg>

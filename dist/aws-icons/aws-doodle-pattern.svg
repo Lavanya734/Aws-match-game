@@ -1,0 +1,62 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420" fill="none">
+  <g stroke="#EC7211" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".08">
+
+    <!-- Cloud -->
+    <path d="M48 73 C35 73 33 57 45 53 C45 39 64 35 73 47 C87 42 98 55 92 66 C89 72 82 73 77 73 Z"/>
+
+    <!-- Code brackets -->
+    <path d="M169 47 L158 58 L169 69 M185 47 L196 58 L185 69 M181 43 L173 73"/>
+
+    <!-- Sparkle -->
+    <path d="M320 40 L325 54 L339 59 L325 64 L320 78 L315 64 L301 59 L315 54 Z"/>
+
+    <!-- Database -->
+    <ellipse cx="349" cy="145" rx="23" ry="9"/>
+    <path d="M326 145 V174 C326 186 372 186 372 174 V145"/>
+    <path d="M326 160 C326 172 372 172 372 160"/>
+
+    <!-- Cube -->
+    <path d="M63 153 L84 141 L106 153 L84 166 Z"/>
+    <path d="M63 153 V178 L84 191 L106 178 V153 M84 166 V191"/>
+
+    <!-- Lambda -->
+    <path d="M173 151 L190 187 M190 151 L173 187"/>
+
+    <!-- Tiny stars -->
+    <path d="M273 137 V151 M266 144 H280"/>
+    <path d="M126 242 V252 M121 247 H131"/>
+
+    <!-- Gear-like cloud service -->
+    <circle cx="285" cy="232" r="20"/>
+    <circle cx="285" cy="232" r="8"/>
+    <path d="M285 205 V212 M285 252 V259 M258 232 H265 M305 232 H312 M266 213 L271 218 M299 246 L304 251 M304 213 L299 218 M271 246 L266 251"/>
+
+    <!-- Open box -->
+    <path d="M43 286 L66 273 L89 286 L66 299 Z"/>
+    <path d="M43 286 V313 L66 327 L89 313 V286 M66 299 V327"/>
+    <path d="M43 286 L66 300 L89 286"/>
+
+    <!-- Brackets -->
+    <path d="M164 278 L153 289 L164 300 M186 278 L197 289 L186 300"/>
+
+    <!-- Sparkle -->
+    <path d="M350 278 L356 294 L372 300 L356 306 L350 322 L344 306 L328 300 L344 294 Z"/>
+
+    <!-- Connected nodes -->
+    <circle cx="250" cy="355" r="7"/>
+    <circle cx="285" cy="337" r="7"/>
+    <circle cx="309" cy="367" r="7"/>
+    <path d="M257 352 L278 340 M290 343 L304 361"/>
+
+    <!-- Small cloud -->
+    <path d="M130 369 C119 369 118 356 129 353 C130 341 146 339 153 349 C164 345 173 356 168 364 C165 369 160 369 156 369 Z"/>
+
+    <!-- Tiny sparkles -->
+    <path d="M226 91 V101 M221 96 H231"/>
+    <path d="M102 221 V233 M96 227 H108"/>
+    <path d="M388 225 V235 M383 230 H393"/>
+    <path d="M212 391 V401 M207 396 H217"/>
+
+  </g>
+</svg>
