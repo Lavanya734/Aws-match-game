@@ -1789,91 +1789,59 @@ body,
    DARK THEME
 ================================ */
 
+/* FIX: Candy theme in dark mode */
 body.dark-mode {
-    --bg: #101010;
-    --surface: #181818;
-    --text: #f5f5f5;
-    --muted: #a2a2a2;
-    --line: #303030;
-
-    background: var(--bg);
-    color: var(--text);
+  --bg: #21152e;
+  --surface: #342340;
+  --card-bg: #342340;
+  --text: #fff3fb;
+  --muted: #cbb6d9;
+  --border: #63456f;
 }
 
-
-/* Main page */
-
-body.dark-mode .game-page {
-    background: var(--bg);
+/* Memory cards */
+body.dark-mode .memory-card,
+body.dark-mode .memory-card-inner,
+body.dark-mode .memory-card-front,
+body.dark-mode .memory-card-back {
+  background-color: #342340 !important;
+  border-color: #765486 !important;
+  color: #fff3fb !important;
 }
 
-
-/* Header text */
-
-body.dark-mode .game-label {
-    color: var(--aws-orange);
+/* Card backs — the AWS logo side */
+body.dark-mode .memory-card-back {
+  background: linear-gradient(145deg, #493052, #30203d) !important;
 }
 
-body.dark-mode .game-header h1 {
-    color: #ffffff;
+/* Service information panel */
+body.dark-mode .service-info-panel,
+body.dark-mode .service-panel {
+  background: #342340 !important;
+  border-color: #765486 !important;
+  color: #fff3fb !important;
 }
 
-body.dark-mode .game-header p {
-    color: #a2a2a2;
+/* Game stats and round counter */
+body.dark-mode .game-stats,
+body.dark-mode .round-counter,
+body.dark-mode .stats-container {
+  background: #342340 !important;
+  border-color: #765486 !important;
+  color: #fff3fb !important;
 }
 
-
-/* Stats */
-
-body.dark-mode .game-stats {
-    background: #181818;
-    border-color: #303030;
-}
-
-body.dark-mode .stat-divider {
-    background: #303030;
-}
-
-body.dark-mode .stat-label {
-    color: #888;
-}
-
-body.dark-mode .game-stats strong {
-    color: #ffffff;
-}
-
-
-/* Theme button */
-
-body.dark-mode .theme-toggle {
-    background: #181818;
-    border-color: #383838;
-    color: #ffffff;
-}
-
-body.dark-mode .theme-toggle:hover {
-    border-color: var(--aws-orange);
-}
-
-
-/* Level progress */
-
-body.dark-mode .level-progress-top strong {
-    color: #999;
-}
-
+/* Progress bar */
+body.dark-mode .progress-bar,
 body.dark-mode .progress-track {
-    background: #292929;
+  background: #493052 !important;
 }
 
-body.dark-mode .services-count {
-    background: #181818;
-    border-color: #303030;
-    color: #ffffff;
-}
-
-body.dark-mode .services-count span {
-    color: #888;
+/* Keep text readable */
+body.dark-mode .memory-card-back *,
+body.dark-mode .service-info-panel *,
+body.dark-mode .service-panel * {
+  color: #fff3fb;
 }
 
 
