@@ -1,337 +1,378 @@
+import { useEffect, useState } from "react";
 import useMemoryGame from "../hooks/useMemoryGame";
 
+import MemoryCard from "./MemoryCard";
+import GameStats from "./GameStats";
+import ServiceInfoPanel from "./ServiceInfoPanel";
+
+import { playLevelComplete } from "../utils/gameSounds";
+
+
 function GameBoard() {
-  const {
-    levels,
-    currentLevel,
-    cards,
-    matchedService,
-    moves,
-    time,
-    totalMoves,
-    totalTime,
-    matchedPairs,
-    totalPairs,
-    gameStarted,
-    gameCompleted,
-    isAllLevelsCompleted,
-    handleCardClick,
-    isCardFlipped,
-    isCardMatched,
-    nextLevel,
-    replayLevel,
-    restartGame,
-  } = useMemoryGame();
 
-  const currentLevelInfo = levels.find(
-    (level) => level.level === currentLevel
-  );
+    const {
+        levels,
+        currentLevel,
+        cards,
+        matchedService,
+        moves,
+        time,
+        totalMoves,
+        totalTime,
+        matchedPairs,
+        totalPairs,
+        gameStarted,
+        gameCompleted,
+        isAllLevelsCompleted,
+        handleCardClick,
+        isCardFlipped,
+        isCardMatched,
+        nextLevel,
+        replayLevel,
+        restartGame,
+    } = useMemoryGame();
 
-  if (isAllLevelsCompleted) {
-    return (
-      <div
-        style={{
-          padding: "40px",
-          textAlign: "center",
-          fontFamily: "Arial, sans-serif",
-        }}
-      >
-        <h1>Congratulations! 🎉</h1>
-
-        <p>You completed all 5 levels!</p>
-
-        <p>
-          <strong>Total Moves:</strong> {totalMoves}
-        </p>
-
-        <p>
-          <strong>Total Time:</strong> {totalTime}s
-        </p>
-
-        <button onClick={restartGame}>Play Again</button>
-      </div>
+    const currentLevelInfo = levels.find(
+        (level) => level.level === currentLevel
     );
-  }
 
-  return (
-    <div
-      style={{
-        padding: "30px",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <h1>AWS Memory Match</h1>
 
-      <div
-        style={{
-          display: "flex",
-          gap: "30px",
-          alignItems: "flex-start",
-        }}
-      >
-        {/* LEFT SIDE - GAME */}
-        <div
-          style={{
-            flex: 1,
-          }}
-        >
-          {/* GAME STATS */}
-          <div
-            style={{
-              marginBottom: "20px",
-            }}
-          >
-            <h2>
-              Level {currentLevel} / {levels.length}
-            </h2>
+    //DARK MODE
+    const [darkMode, setDarkMode] = useState(() => {
+        return localStorage.getItem("aws-memory-dark-mode") === "true";
+    });
 
-            <p>
-              Services: {currentLevelInfo?.serviceCount}
-            </p>
+    const getGridColumns = (count) => {
+        if (count <= 8) return 4;
+        if (count <= 16) return 4;
+        if (count <= 25) return 5;
+        return 6;
+    };
 
-            <p>
-              Cards: {cards.length}
-            </p>
 
-            <p>
-              Pairs: {matchedPairs} / {totalPairs}
-            </p>
 
-            <p>
-              Moves: {moves}
-            </p>
+    const gridColumns = getGridColumns(cards.length);
 
-            <p>
-              Time: {time}s
-            </p>
+    useEffect(() => {
+        document.body.classList.toggle("dark-mode", darkMode);
+        localStorage.setItem("aws-memory-dark-mode", darkMode);
+    }, [darkMode]);
 
-            <hr />
 
-            <p>
-              <strong>Total Moves:</strong> {totalMoves}
-            </p>
+    // Small celebration whenever a pair is matched
+    // useEffect(() => {
+    //     if (matchedPairs > matchCount) {
+    //         setMatchCount(matchedPairs);
+    //         setShowMatch(true);
 
-            <p>
-              <strong>Total Time:</strong> {totalTime}s
-            </p>
-          </div>
+    //         const timer = setTimeout(() => {
+    //             setShowMatch(false);
+    //         }, 1400);
 
-          {/* CARDS */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 140px)",
-              gap: "16px",
-            }}
-          >
-            {cards.map((card) => {
-              const flipped = isCardFlipped(card.cardId);
-              const matched = isCardMatched(card.cardId);
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [matchedPairs, matchCount]);
 
-              return (
-                <button
-                  key={card.cardId}
-                  onClick={() => handleCardClick(card)}
-                  disabled={matched}
-                  style={{
-                    width: "140px",
-                    height: "160px",
-                    padding: 0,
-                    border: "none",
-                    background: "transparent",
-                    cursor: matched ? "default" : "pointer",
-                    perspective: "1000px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      position: "relative",
-                      transformStyle: "preserve-3d",
-                      transition: "transform 0.6s ease",
-                      transform: flipped
-                        ? "rotateY(180deg)"
-                        : "rotateY(0deg)",
-                    }}
-                  >
-                    {/* CARD FRONT */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        width: "100%",
-                        height: "100%",
-                        backfaceVisibility: "hidden",
-                        WebkitBackfaceVisibility: "hidden",
-                        background: "#232f3e",
-                        borderRadius: "12px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        boxShadow:
-                          "0 4px 10px rgba(0,0,0,0.2)",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "42px",
-                          color: "white",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        ?
-                      </span>
+    // Success Sound Effect
+
+    useEffect(() => {
+        if (gameCompleted) {
+            playLevelComplete();
+        }
+    }, [gameCompleted]);
+
+    /*
+     * ALL LEVELS COMPLETED
+     */
+    if (isAllLevelsCompleted) {
+        return (
+            <main className="game-page">
+
+                <div className="level-complete-overlay">
+                    <div className="level-complete-modal final-modal">
+
+                        <div className="celebration-icon">
+                            🏆
+                        </div>
+
+                        <span className="modal-eyebrow">
+                            ALL LEVELS COMPLETE
+                        </span>
+
+                        <h1>
+                            You did it!
+                        </h1>
+
+                        <p className="modal-description">
+                            You mastered every AWS memory challenge.
+                        </p>
+
+                        <div className="modal-stats">
+                            <div>
+                                <span>TOTAL MOVES</span>
+                                <strong>{totalMoves}</strong>
+                            </div>
+
+                            <div>
+                                <span>TOTAL TIME</span>
+                                <strong>{totalTime}s</strong>
+                            </div>
+                        </div>
+
+                        <button
+                            className="modal-primary-button"
+                            onClick={restartGame}
+                        >
+                            Play Again
+                            <span>↻</span>
+                        </button>
+
+                    </div>
+                </div>
+            </main>
+        );
+    }
+
+    return (
+        <main className="game-page">
+
+            <button
+                className="theme-toggle"
+                onClick={() => setDarkMode(!darkMode)}
+                aria-label="Toggle dark mode"
+            >
+                <span className="theme-icon">
+                    {darkMode ? "☀" : "☾"}
+                </span>
+
+                <span className="theme-text">
+                    {darkMode ? "LIGHT" : "DARK"}
+                </span>
+            </button>
+
+            {/* HEADER */}
+            <div className="game-header">
+                <div>
+
+                    <span className="game-label">
+                        AWS MEMORY MATCH
+                    </span>
+
+                    <h1>
+                        Match the
+                        <span> services.</span>
+                    </h1>
+
+                    <p>
+                        Find the matching AWS service cards and learn
+                        something new along the way.
+                    </p>
+
+
+                </div>
+
+                <GameStats
+                    moves={moves}
+                    time={`${time}s`}
+                    matched={matchedPairs}
+                    total={totalPairs}
+                />
+            </div>
+
+            {/* LEVEL PROGRESS */}
+            <div className="game-level-info">
+
+                <div className="level-progress">
+
+                    <div className="level-progress-top">
+                        <span>
+                            LEVEL {currentLevel}
+                        </span>
+
+                        <strong>
+                            {matchedPairs} / {totalPairs} MATCHED
+                        </strong>
                     </div>
 
-                    {/* CARD BACK */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        width: "100%",
-                        height: "100%",
-                        backfaceVisibility: "hidden",
-                        WebkitBackfaceVisibility: "hidden",
-                        transform: "rotateY(180deg)",
-                        background: "white",
-                        border: "1px solid #ddd",
-                        borderRadius: "12px",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        boxSizing: "border-box",
-                        padding: "10px",
-                        boxShadow:
-                          "0 4px 10px rgba(0,0,0,0.15)",
-                      }}
-                    >
-                      <img
-                        src={card.icon}
-                        alt={card.name}
-                        width="60"
-                        height="60"
-                      />
-
-                      <p
-                        style={{
-                          marginTop: "10px",
-                          textAlign: "center",
-                          fontSize: "14px",
-                        }}
-                      >
-                        {card.name}
-                      </p>
+                    <div className="progress-track">
+                        <div
+                            className="progress-fill"
+                            style={{
+                                width: `${totalPairs > 0
+                                    ? (matchedPairs / totalPairs) * 100
+                                    : 0
+                                    }%`,
+                            }}
+                        />
                     </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
 
-          {/* GAME MESSAGE */}
-          {gameStarted && !gameCompleted && (
-            <p>
-              Keep going! Find all the pairs. 💪
-            </p>
-          )}
+                </div>
 
-          {/* LEVEL COMPLETED */}
-          {gameCompleted && (
-            <div style={{ marginTop: "25px" }}>
-              <h2>
-                Level {currentLevel} Completed! 🎉
-              </h2>
+                <div className="services-count">
+                    <span>ROUND</span>
 
-              <p>Moves: {moves}</p>
+                    <strong>
+                        {currentLevel} / {levels.length}
+                    </strong>
+                </div>
 
-              <p>Time: {time}s</p>
-
-              <button onClick={replayLevel}>
-                Replay Level
-              </button>
-
-              {currentLevel < levels.length && (
-                <button
-                  onClick={nextLevel}
-                  style={{ marginLeft: "10px" }}
-                >
-                  Next Level
-                </button>
-              )}
             </div>
-          )}
 
-          {/* RESTART */}
-          <button
-            onClick={restartGame}
-            style={{
-              marginTop: "20px",
-            }}
-          >
-            Restart Game
-          </button>
-        </div>
+            {/* GAME AREA */}
+            <div className="game-layout">
 
-        {/* RIGHT SIDE - MATCHED SERVICE */}
-        <div
-          style={{
-          width: "300px",
-          minHeight: "400px",
-          maxHeight: "calc(100vh - 40px)",
-          border: "1px solid #ddd",
-          borderRadius: "12px",
-          padding: "20px",
-          boxSizing: "border-box",
- 
-          position: "sticky",
-          top: "20px",
-          alignSelf: "flex-start",
-          overflowY: "auto",
-  }}
->
-          <h2>Matched Service</h2>
+                {/* CARDS */}
+                <section className="cards-section">
 
-          {matchedService ? (
-            <div>
-              <img
-                src={matchedService.icon}
-                alt={matchedService.name}
-                width="80"
-                height="80"
-              />
 
-              <h3>{matchedService.name}</h3>
+                    <div className="cards-grid"
 
-              <p>
-                <strong>Category:</strong>{" "}
-                {matchedService.category}
-              </p>
+                        style={{ "--grid-columns": gridColumns }}
+                    >
 
-              <p>
-                <strong>What:</strong>{" "}
-                {matchedService.what}
-              </p>
+                        {cards.map((card) => {
+                            const flipped = isCardFlipped(
+                                card.cardId
+                            );
 
-              <p>
-                <strong>Why:</strong>{" "}
-                {matchedService.why}
-              </p>
+                            const matched = isCardMatched(
+                                card.cardId
+                            );
 
-              <p>
-                <strong>Where:</strong>{" "}
-                {matchedService.where}
-              </p>
+                            return (
+                                <MemoryCard
+                                    key={card.cardId}
+                                    service={card}
+                                    isFlipped={flipped}
+                                    isMatched={matched}
+                                    onClick={() =>
+                                        handleCardClick(card)
+                                    }
+                                />
+                            );
+                        })}
+
+                    </div>
+
+                    {gameStarted && !gameCompleted && (
+                        <p className="game-message">
+                            Keep going! Find all the pairs. 💪
+                        </p>
+                    )}
+
+                    {/* LEVEL COMPLETE POPUP */}
+                    {gameCompleted && (
+                        <div className="level-complete-overlay">
+
+                            <div className="level-complete-modal">
+
+                                {/* Decorative particles */}
+                                <div className="celebration-particle particle-one">
+                                    ✦
+                                </div>
+
+                                <div className="celebration-particle particle-two">
+                                    ✧
+                                </div>
+
+                                <div className="celebration-particle particle-three">
+                                    ✦
+                                </div>
+
+                                {/* Trophy */}
+                                <div className="celebration-icon">
+                                    🏆
+                                </div>
+
+                                <span className="modal-eyebrow">
+                                    LEVEL {currentLevel} COMPLETE
+                                </span>
+
+                                <h1>
+                                    Nice work!
+                                </h1>
+
+                                <p className="modal-description">
+                                    You found every AWS service pair.
+                                </p>
+
+                                {/* Results */}
+                                <div className="modal-stats">
+
+                                    <div>
+                                        <span>MOVES</span>
+                                        <strong>
+                                            {moves}
+                                        </strong>
+                                    </div>
+
+                                    <div>
+                                        <span>TIME</span>
+                                        <strong>
+                                            {time}s
+                                        </strong>
+                                    </div>
+
+                                    <div>
+                                        <span>MATCHED</span>
+                                        <strong>
+                                            {matchedPairs}/{totalPairs}
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+                                {/* Actions */}
+                                <div className="modal-actions">
+
+                                    <button
+                                        className="modal-secondary-button"
+                                        onClick={replayLevel}
+                                    >
+                                        Replay
+                                    </button>
+
+                                    {currentLevel < levels.length ? (
+                                        <button
+                                            className="modal-primary-button"
+                                            onClick={nextLevel}
+                                        >
+                                            Next Level
+                                            <span>→</span>
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="modal-primary-button"
+                                            onClick={restartGame}
+                                        >
+                                            Play Again
+                                            <span>↻</span>
+                                        </button>
+                                    )}
+
+                                </div>
+
+                                <div className="modal-bottom-text">
+                                    {currentLevel < levels.length
+                                        ? "Ready for the next challenge?"
+                                        : "You've completed every level!"}
+                                </div>
+
+                            </div>
+                        </div>
+                    )}
+
+                    {/* SERVICE INFORMATION */}
+                </section>
+
+                <ServiceInfoPanel
+                    service={matchedService}
+                />
+
             </div>
-          ) : (
-            <p>
-              Match a pair to see information about the AWS
-              service here.
-            </p>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+
+        </main>
+    );
 }
 
 export default GameBoard;
